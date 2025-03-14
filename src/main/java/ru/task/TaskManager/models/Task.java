@@ -1,11 +1,17 @@
 package ru.task.TaskManager.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
+
+enum Status {
+    Waiting,
+    Processing,
+    Finished
+}
 
 @Entity
 @NoArgsConstructor
@@ -13,10 +19,12 @@ import lombok.Setter;
 @Setter
 public class Task {
     @Id
-    @GeneratedValue
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String description;
-    private String status;
-    private String comments;
+    @Enumerated(EnumType.STRING)
+    private Status status;
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> comment;
 }

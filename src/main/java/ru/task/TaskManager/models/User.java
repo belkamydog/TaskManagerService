@@ -1,8 +1,6 @@
 package ru.task.TaskManager.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,13 +14,21 @@ enum Role {
 @NoArgsConstructor
 @Getter
 @Setter
+@Table (name = "users")
 public class User {
     @Id
-    @GeneratedValue
-    private int id;
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private long id;
     private String login;
     private String password;
     private String email;
-    private Role role;
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.User;
     boolean enabled = true;
+
+    public User(String password, String email) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+    }
 }
